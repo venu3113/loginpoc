@@ -14,7 +14,8 @@ function Register() {
         setForm({...form,[e.target.name]:e.target.value});
     }
 
-    const register=async()=>{
+    const register=async(e)=>{
+        e.preventDefault();
 
         const res=await api.post("/register",form);
 
@@ -23,7 +24,7 @@ function Register() {
 
     return(
 
-        <form>
+        <form onSubmit={register}>
         <h2>REGISTER</h2>
 
         <div>
@@ -58,7 +59,7 @@ function Register() {
             onChange={handleChange}
             />
         </div>
-        <div><button onClick={register}>
+        <div><button type="submit">
         Register
         </button>
         </div>

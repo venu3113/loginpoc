@@ -10,7 +10,8 @@ function Login(){
 
     const [password,setPassword]=useState("");
 
-    const login=async()=>{
+    const login=async(e)=>{
+        e.preventDefault();
 
         try{
 
@@ -40,7 +41,7 @@ function Login(){
 
         <>
 
-        <form onsubmit={login} method="post">
+        <form onSubmit={login} method="post">
           <h2>LOGIN</h2>
           <div>
             <input
