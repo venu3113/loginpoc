@@ -4,29 +4,41 @@ from db import get_connection
 routes = Blueprint("routes",__name__)
 
 @routes.route("/register",methods=["POST"])
+
+@routes.route("/register", methods=["POST"])
 def register():
+
     data = request.json
-    
+
     fname = data["fname"]
     lname = data["lname"]
     email = data["email"]
     password = data["password"]
-    
+
     conn = get_connection()
     cursor = conn.cursor()
-    
+
+    cursor.execute("SELECT DATABASE()")
+    print("Current Database:", cursor.fetchone())
+
     sql = """
-    INSERT INTO USERS(fname,lname,email,password)
-    values(%s,%s,%s,%s)
+    INSERT INTO users(fname,lname,email,password)
+    VALUES(%s,%s,%s,%s)
     """
-    cursor.execute(sql,(fname,lname,email,password))
-    
+
+    cursor.execute(sql, (fname, lname, email, password))
+    print("Insert executed")
+
     conn.commit()
-    
+    print("Commit executed")
+
+    cursor.execute("SELECT * FROM users")
+    print(cursor.fetchall())
+
     cursor.close()
     conn.close()
-    
-    return jsonify({"message":"register successful"})
+
+    return jsonify({"message": "Register successful"})
 
 @routes.route("/login", methods=["POST"])
 def login():
@@ -63,10 +75,11 @@ def login():
             "message": "Login successful"
         })
 
-    return jsonify({
+    else:
+        return jsonify({
         "success": False,
         "message": "Invalid credentials"
-    }), 401
+        }), 401
         
     
         
