@@ -20,7 +20,19 @@ function Login(){
             password
           });
 
+          localStorage.setItem("token",res.data.token)
+
+          const token = localStorage.getItem("token");
+
+          const profileres =await api.get("/profile",{
+            headers:{
+              Authorization:`Bearer ${token}`
+            }
+          });
+
+          console.log("profileres",profileres);
           console.log("res",res)
+          
             if (res.data.success) {
               navigate("/home");
             } else {
